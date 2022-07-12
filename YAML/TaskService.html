@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskServices API</title>
+    <script>
+ 
+function getTaskServices(){
+        var requestOptions = {  
+        method: 'GET',
+        redirect: 'follow'
+        };
+ 
+        fetch("http://localhost:5000/api/TaskServices", requestOptions)
+        .then(response => response.text())
+        .then(result => {console.log(result);
+                    document.getElementById("output").innerHTML = result;
+                    })
+        .catch(error => console.log('error', error));
+}
+ 
+function addTaskServices(){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+ 
+            var body = JSON.stringify({
+            "TaskId": 0,
+            "TaskDescription": "Mechanical",
+            "TaskPriority": "In_Progress",
+            "CustomerId": "10212"
+            });
+ 
+            var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: body,
+            redirect: 'follow'
+            };
+ 
+            fetch("http://localhost:5000/api/Pets", requestOptions)
+            .then(response => response.text())
+            .then(result => {console.log(result);
+                    document.getElementById("output").innerHTML = result;
+                    })
+            .catch(error => console.log('error', error));
+            }
+ 
+    </script>
+</head>
+<body>
+    <button onclick="getTaskServices()">Get TaskServices</button>
+    <button onclick="addTaskServices()">Add TaskServices</button>
+    <div id="output"></div>
+ 
+ 
+</body>
+</html>
