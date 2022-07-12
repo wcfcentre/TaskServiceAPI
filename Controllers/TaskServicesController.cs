@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,80 +19,89 @@ namespace TaskService.Controllers
             _context = context;
         }
 
-        // GET: TaskServicesController
+        // GET: api/TaskService
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult<IEnumerable<TasksService>>> GetTasksService()
         {
-            return View();
+            return await _context.TaskServices.ToListAsync();
         }
 
-        // GET: TaskServicesController/Details/5
-        public ActionResult Details(int id)
+        // GET: api/TaskService/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TasksService>> GetTaskService(int id)
         {
-            return View();
+            var tasks = await _context.TaskServices.FindAsync(id);
+
+            if (tasks == null)
+            {
+                return NotFound();
+            }
+
+            return tasks;
         }
 
-        // GET: TaskServicesController/Create
-        public ActionResult Create()
+        // PUT: api/TaskService/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTaskService(int id, TasksService tasks)
         {
-            return View();
-        }
+            if (id != tasks.TaskId)
+            {
+                return BadRequest();
+            }
 
-        // POST: TaskServicesController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
+            _context.Entry(tasks).State = EntityState.Modified;
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            catch
+            catch (DbUpdateConcurrencyException)
             {
-                return View();
+                if (!TasksServiceExist(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
+
+            return NoContent();
         }
 
-        // GET: TaskServicesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TaskServicesController/Edit/5
+        // POST: api/Pets
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult<TasksService>> PostTasksService(TasksService tasks)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _context.TaskServices.Add(tasks);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTaskService", new { id = tasks.TaskId }, tasks);
         }
 
-        // GET: TaskServicesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> DeletePet(int id)
         {
-            return View();
+            var pet = await _context.TaskServices.FindAsync(id);
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            _context.TaskServices.Remove(pet);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
-        // POST: TaskServicesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        private bool TasksServiceExist(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            //throw new NotImplementedException();
+            return _context.TaskServices.Any(e => e.TaskId == id);
         }
+
+
     }
 }

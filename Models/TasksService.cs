@@ -29,7 +29,7 @@ namespace TaskService.Models
         public string TaskPriority { get; set; }
         //Task Status[STARTED, IN_PROGRESS, COMPLETED, FAILED],
 
-        //public string TaskStatus { get; set; }
+        public string TaskStatus { get; set; }
         public List<String> _TaskStatus { get; set; }
 
         public List<string> TaskStatus2
