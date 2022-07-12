@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: kong
+  name: Task-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: Task-service
+            port:
+              number: 80
+        path: /Taskdemo
+        pathType: Prefix
