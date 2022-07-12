@@ -30,6 +30,7 @@ namespace TaskService
         {
 
             services.AddControllers();
+            //services.AddDbContext<TaskDBContext>();
             services.AddDbContext<TaskDBContext>(opt =>
                                              opt.UseInMemoryDatabase("TaskServices"));
             services.AddSwaggerGen(c =>

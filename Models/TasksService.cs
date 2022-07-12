@@ -8,17 +8,6 @@ namespace TaskService.Models
 {
     public class TasksService
     {
-        public TasksService()
-        {
-            _TaskStatus = new List<string>
-                        {
-                            "STARTED",
-                            "IN_PROGRESS",
-                            "COMPLETED",
-                            "FAILED"
-                        };
-        }
-
         public TasksService(int id, string Description, string Priority, string Status, string Custid)
         {
             TaskId = id;
@@ -26,6 +15,13 @@ namespace TaskService.Models
             TaskPriority = Priority;
             //TaskStatus = Status;
             CustomerId = Custid;
+            _TaskStatus = new List<string>
+                            {
+                                "STARTED",
+                                "IN_PROGRESS",
+                                "COMPLETED",
+                                "FAILED"
+                            };
         }
 
         public int TaskId { get; set; }
